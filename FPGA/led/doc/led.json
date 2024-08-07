@@ -1,0 +1,18 @@
+{ signal:
+[
+  ["input",
+    {
+      name: 'key',
+      wave: 'h.l.h...l.h'}
+
+  ],
+     
+  {},
+  ["led", 
+   {
+      name: 'led',
+      wave: 'l.h.l...h.l'}
+  ]
+  
+]
+}
