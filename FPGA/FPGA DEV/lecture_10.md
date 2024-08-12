@@ -330,4 +330,82 @@ always @(posedge clk or negedge rst_n) begin
     end
 end
 ```
+# 狀態機
++ 密碼鎖，等於序列檢測器。可用狀態機實現。
++ 狀態機適合實現順序邏輯，Verilog 預設平行處理，不好順序執行。
++ finite state machine;有限狀態機：有限個狀態之間按照一定規律轉換的時序電路
 
+## Mealy 狀態機
+產生狀態的組合邏輯 F -> 狀態暫存器 -> 產生輸出的組合邏輯 G。
+G 接受「輸入訊號」與「目前狀態」決定功能輸出
+
+## Moore 狀態機
+G 接受「目前狀態」決定功能輸出
+
+# 狀態機設計
+1. 狀態空間定義
+1. 狀態跳轉
+1. 判斷下一狀態
+1. 各狀態的功能
+
+## 狀態空間定義
+```v
+// define state space
+parameter SLEEP     = 2'b`00;
+parameter STUDY     = 2'b`01;
+parameter EAT       = 2'b`10;
+parameter AMUSE     = 2'b`11;
+
+// intrnal variable
+reg [1:0] current_state;
+reg [1:0] next_state;
+```
+
+```v
+// define state space
+// one hot encoded
+parameter SLEEP     = 2'b`1000;
+parameter STUDY     = 2'b`0100;
+parameter EAT       = 2'b`0010;
+parameter AMUSE     = 2'b`0001;
+
+// intrnal variable
+reg [3:0] current_state;
+reg [3:0] next_state;
+```
+
+## 狀態跳轉 (時序邏輯)
+```v
+always @(posedge clk or negedge rst_n) begin
+    if (!rst_n)
+        current_state <= SLEEP;
+    else
+        current_state <= next_state;
+end
+```
+
+## 下一狀態判斷
+```v
+always @(current_state or input_signals) begin
+    case(current_state)
+        SLEEP: begin
+            if (clock_alarm)
+                next_state = STUDY;
+            else
+                next_state = SLEEP;
+        end
+
+        STUDY: begin
+            if (lunch_time)
+                next_state = EAT;
+            else
+                next_state = STUDY;
+        end
+
+        EAT: ...
+        AMUSE: ...
+        default: ...
+    endcase
+    
+end
+```
