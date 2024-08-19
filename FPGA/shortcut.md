@@ -12,6 +12,10 @@ Down
 Ctrl
 Alt
 Down / Up 
+
+CMD
+Option
+Down / Up
 ### Move line up/down
 Alt+ ↑ / ↓ 
 Option+ ↑ / ↓ 
